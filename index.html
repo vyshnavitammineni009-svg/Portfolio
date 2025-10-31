@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ==============================
+       Vyshnavi Tammineni — Shopify Developer Portfolio
+       Single-file: HTML + CSS + JS (no external deps)
+       Drop this into GitHub Pages and replace RESUME_URL + links below.
+  ================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vyshnavi Tammineni · Shopify Developer</title>
+  <meta name="description" content="Shopify Theme Specialist — Liquid, React, GraphQL. High-performance, colorful, interactive portfolio with case studies and resume download."/>
+  <meta name="theme-color" content="#6c5ce7"/>
+
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --txt:#eef2ff;
+      --muted:#b8c1ec;
+      --accent:#6c5ce7;         /* Indigo */
+      --accent2:#00e5ff;        /* Aqua */
+      --accent3:#ff6bcb;        /* Pink */
+      --glass:rgba(255,255,255,.08);
+      --glass-bd:rgba(255,255,255,.18);
+      --ok:#2ce3a0;
+      --warn:#ffd166;
+      --bad:#ff6b6b;
+      --shadow:0 20px 60px rgba(0,0,0,.45);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial;
+      color:var(--txt); background: radial-gradient(1200px 600px at 10% -10%, #1b1f3a 0%, transparent 60%),
+                         radial-gradient(700px 400px at 90% -20%, #2b164d 0%, transparent 60%),
+                         linear-gradient(135deg,#0b1020 0%, #101532 50%, #0f1a38 100%);
+      overflow-x:hidden;
+    }
+
+    /* Animated Aurora Background */
+    .aurora{
+      position:fixed; inset:-20vmin; z-index:-1; filter: blur(45px) saturate(140%);
+      background:
+        radial-gradient(closest-side, rgba(108,92,231,.35), transparent) 10% 20%/30% 30%,
+        radial-gradient(closest-side, rgba(0,229,255,.35), transparent) 80% 0%/35% 35%,
+        radial-gradient(closest-side, rgba(255,107,203,.35), transparent) 40% 90%/40% 40%,
+        radial-gradient(closest-side, rgba(255,209,102,.22), transparent) 95% 70%/25% 25%;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    @keyframes drift{
+      0%{transform: translateX(-2%) translateY(-2%) rotate(0.5deg)}
+      100%{transform: translateX(2%) translateY(2%) rotate(-0.5deg)}
+    }
+
+    /* Nav */
+    nav{
+      position:fixed; inset:0 0 auto 0; z-index:999;
+      backdrop-filter: blur(10px) saturate(130%);
+      background: linear-gradient( to right, rgba(12,16,32,.55), rgba(12,16,32,.25) );
+      border-bottom:1px solid var(--glass-bd);
+    }
+    .nav-wrap{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:18px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
+    .logo{
+      width:34px; height:34px; border-radius:10px;
+      background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+      box-shadow: 0 0 0 2px rgba(255,255,255,.06) inset, 0 8px 24px rgba(108,92,231,.35);
+    }
+    .nav-links{margin-left:auto; display:flex; gap:14px; flex-wrap:wrap}
+    .nav-links a{
+      color:var(--txt); text-decoration:none; padding:10px 14px; border-radius:12px;
+      background: transparent; border:1px solid transparent; font-weight:600; font-size:14px;
+      transition:.25s;
+    }
+    .nav-links a:hover{ border-color:var(--glass-bd); background:rgba(255,255,255,.04); transform: translateY(-1px)}
+    .cta{background: linear-gradient(90deg, var(--accent), var(--accent2)); border:none}
+    .cta:hover{transform: translateY(-1px) scale(1.02); box-shadow: 0 10px 30px rgba(108,92,231,.35)}
+
+    /* Sections */
+    section{max-width:1200px; margin:0 auto; padding:100px 20px}
+    .hero{padding-top:140px; display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
+    @media (max-width: 950px){
+      .hero{grid-template-columns:1fr}
+      .nav-links{display:none}
+    }
+
+    /* Hero card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--glass-bd);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{padding:32px}
+    .eyebrow{display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--muted); letter-spacing:.15em; text-transform:uppercase; font-size:12px}
+    .spark{width:10px; height:10px; border-radius:999px; background: var(--ok); box-shadow:0 0 16px var(--ok)}
+    h1{font-size: clamp(32px, 5vw, 54px); line-height:1.05; margin:10px 0 10px; font-weight:900}
+    .gradient{
+      background: linear-gradient(90deg, #fff, var(--accent2), var(--accent3), #fff);
+      -webkit-background-clip: text; background-clip:text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle{color:var(--muted); font-size: clamp(16px, 2vw, 18px); max-width: 60ch}
+    .pills{display:flex; gap:10px; flex-wrap:wrap; margin:16px 0}
+    .pill{padding:8px 12px; border-radius:999px; border:1px solid var(--glass-bd); background: rgba(255,255,255,.04); font-size:13px; color:#dfe3ff}
+
+    .stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px}
+    .stat{padding:16px; border-radius:16px; border:1px solid var(--glass-bd); background:rgba(255,255,255,.05); text-align:center}
+    .stat .num{font-size:26px; font-weight:900}
+    .stat .lab{font-size:12px; color:var(--muted)}
+    @media (max-width:700px){.stat-grid{grid-template-columns: repeat(2,1fr)}}
+
+    .hero-side{
+      display:grid; gap:14px; align-content:start
+    }
+    .hero-tile{
+      padding:18px; display:flex; gap:14px; align-items:center
+    }
+    .icon{
+      width:42px; height:42px; border-radius:12px; flex: 0 0 auto;
+      background: linear-gradient(135deg,var(--accent),var(--accent3)); display:grid; place-items:center
+    }
+    .icon svg{width:22px; height:22px; fill:#fff}
+    .tile-title{font-weight:800}
+    .tile-sub{color:var(--muted); font-size:13px}
+
+    /* Actions */
+    .actions{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
+    .btn{
+      appearance:none; border:none; cursor:pointer; font-weight:800; letter-spacing:.2px;
+      padding:14px 18px; border-radius:14px; color:#0b1020; background:#fff;
+      transition:.25s; display:inline-flex; align-items:center; gap:10px; text-decoration:none
+    }
+    .btn:hover{transform: translateY(-1px); box-shadow: 0 14px 30px rgba(255,255,255,.12)}
+    .btn-ghost{background: transparent; border:1px solid var(--glass-bd); color:var(--txt)}
+    .btn-ghost:hover{background: rgba(255,255,255,.06)}
+    .btn-grad{background: linear-gradient(90deg, var(--accent), var(--accent2))}
+    .btn-pulse{box-shadow:0 0 0 0 rgba(108,92,231,.45); animation:pulseBtn 2s infinite}
+    @keyframes pulseBtn{ 0%{box-shadow:0 0 0 0 rgba(108,92,231,.45)} 70%{box-shadow:0 0 0 18px rgba(108,92,231,0)} 100%{box-shadow:0 0 0 0 rgba(108,92,231,0)} }
+
+    /* Section Headers */
+    .sec-head{display:flex; align-items:end; justify-content:space-between; gap:14px; margin-bottom:18px}
+    .sec-title{font-size: clamp(22px, 3.5vw, 34px); font-weight:900}
+    .sec-sub{color:var(--muted)}
+
+    /* Filter bar */
+    .filters{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      padding:9px 12px; border-radius:999px; border:1px solid var(--glass-bd); background:rgba(255,255,255,.04);
+      color:var(--txt); font-weight:700; font-size:13px; cursor:pointer; transition:.2s
+    }
+    .chip[aria-checked="true"]{background: linear-gradient(90deg,var(--accent),var(--accent2)); color:#000}
+    .chip:hover{transform: translateY(-1px)}
+
+    /* Projects */
+    .grid{display:grid; gap:16px; grid-template-columns: repeat(3, 1fr)}
+    @media (max-width:1050px){.grid{grid-template-columns: repeat(2, 1fr)}}
+    @media (max-width:700px){.grid{grid-template-columns: 1fr}}
+    .card-proj{overflow:hidden; position:relative}
+    .card-proj .banner{
+      height:160px; background:
+        radial-gradient(800px 200px at -10% 110%, rgba(255,107,203,.35), transparent 70%),
+        radial-gradient(800px 200px at 110% -10%, rgba(0,229,255,.35), transparent 70%),
+        linear-gradient(135deg, #1b1f3a, #20254a);
+      border-bottom:1px solid var(--glass-bd);
+    }
+    .card-proj .body{padding:18px}
+    .kpis{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0}
+    .kpi{padding:8px 10px; border:1px solid var(--glass-bd); border-radius:10px; background:rgba(255,255,255,.04); font-size:12px}
+    .tags{display:flex; gap:8px; flex-wrap:wrap}
+    .tag{font-size:11px; padding:6px 8px; border-radius:999px; border:1px solid var(--glass-bd); color:#dfe3ff; opacity:.9}
+    .proj-actions{display:flex; gap:8px; margin-top:12px}
+    .proj-actions a{font-size:13px}
+
+    /* Skills */
+    .skills-grid{display:grid; gap:16px; grid-template-columns: repeat(4,1fr)}
+    @media (max-width:1000px){.skills-grid{grid-template-columns: repeat(2,1fr)}}
+    @media (max-width:600px){.skills-grid{grid-template-columns: 1fr}}
+    .skill{padding:18px}
+    .badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+    .badge{padding:8px 10px; border:1px solid var(--glass-bd); border-radius:999px; font-size:12px; background:rgba(255,255,255,.05)}
+
+    /* Contact */
+    .contact{display:grid; gap:16px; grid-template-columns: 1.2fr .8fr}
+    @media (max-width:900px){.contact{grid-template-columns: 1fr}}
+    .contact .item{padding:18px; display:flex; gap:14px; align-items:center}
+    .contact .title{font-weight:800}
+    .contact .val{color:var(--muted)}
+    .contact .status{display:flex; align-items:center; gap:10px; padding:16px; border-radius:14px; border:1px solid var(--glass-bd); background:rgba(255,255,255,.04)}
+    .dot{width:12px; height:12px; border-radius:999px; background:var(--ok); box-shadow:0 0 14px var(--ok); animation: blink 1.8s infinite}
+    @keyframes blink{0%,100%{opacity:1} 50%{opacity:.35}}
+
+    /* Footer */
+    footer{padding:50px 20px; text-align:center; color:var(--muted); border-top:1px solid var(--glass-bd); background:linear-gradient(180deg, rgba(255,255,255,.04), transparent)}
+
+    /* Reveal on scroll */
+    .reveal{opacity:0; transform: translateY(12px); transition: .6s ease}
+    .reveal.show{opacity:1; transform:none}
+  </style>
+</head>
+<body>
+
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>Vyshnavi · <span style="font-weight:600; color:#a5b4fc">Shopify Dev</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="cta">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="card hero-card reveal">
+      <div class="eyebrow"><span class="spark"></span> Available · Mon–Fri · Remote</div>
+      <h1><span class="gradient">Vyshnavi Tammineni</span></h1>
+      <div class="subtitle">
+        Shopify Theme Specialist focused on **Liquid**, **React**, **GraphQL**, and performance-first, mobile-ready e-commerce builds.
+      </div>
+      <div class="pills" aria-label="Highlights">
+        <div class="pill">PageSpeed 92+</div>
+        <div class="pill">95% Mobile Usability</div>
+        <div class="pill">WCAG 2.1 AA</div>
+        <div class="pill">Shopify Functions</div>
+      </div>
+      <div class="stat-grid" role="list">
+        <div class="stat" role="listitem"><div class="num" data-count="4">0</div><div class="lab">Years</div></div>
+        <div class="stat" role="listitem"><div class="num" data-count="150">0</div><div class="lab">Websites</div></div>
+        <div class="stat" role="listitem"><div class="num" data-count="500">0</div><div class="lab">Components</div></div>
+        <div class="stat" role="listitem"><div class="num" data-count="45">0</div><div class="lab">Load Time ↓%</div></div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-grad btn-pulse" href="#projects">⚡ View Work</a>
+        <button class="btn btn-ghost" onclick="downloadResume()">📥 Download Resume</button>
+        <a class="btn" href="#contact">💬 Contact</a>
+      </div>
+    </div>
+
+    <div class="hero-side">
+      <div class="card hero-tile reveal">
+        <div class="icon" aria-hidden="true">
+          <!-- cart icon -->
+          <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 18m10 0a2 2 0 1 0 .001 4.001A2 2 0 0 0 17 18M3 2h2l.4 2M7 13h9a2 2 0 0 0 1.8-1.1l3.1-6.2A1 1 0 0 0 20 4H6.4M7 13 5 6m0 0H3"/></svg>
+        </div>
+        <div>
+          <div class="tile-title">Theme Systems</div>
+          <div class="tile-sub">Reusable sections/snippets, schema-driven UIs, metafields.</div>
+        </div>
+      </div>
+      <div class="card hero-tile reveal">
+        <div class="icon" aria-hidden="true" style="background:linear-gradient(135deg,var(--accent2),var(--accent3))">
+          <!-- speed -->
+          <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-9 9h2a7 7 0 1 1 7 7v2a9 9 0 0 0 0-18m1 8h-3v3h2v2h3v-2h-2z"/></svg>
+        </div>
+        <div>
+          <div class="tile-title">Performance & SEO</div>
+          <div class="tile-sub">Lazy loading, bundle trims, PSI/Lighthouse CI.</div>
+        </div>
+      </div>
+      <div class="card hero-tile reveal">
+        <div class="icon" aria-hidden="true" style="background:linear-gradient(135deg,var(--accent3),var(--accent))">
+          <!-- api -->
+          <svg viewBox="0 0 24 24"><path d="M4 7h4v10H4zM10 7h10v4H10zM10 13h10v4H10z"/></svg>
+        </div>
+        <div>
+          <div class="tile-title">APIs & GraphQL</div>
+          <div class="tile-sub">Inventory, reviews, payments, dynamic content.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="sec-head">
+      <div>
+        <div class="sec-title">Featured Projects</div>
+        <div class="sec-sub">Filter by focus to explore the most relevant work for you.</div>
+      </div>
+      <div class="filters" role="tablist" aria-label="Project filters">
+        <button class="chip" aria-checked="true" role="tab" data-filter="all">All</button>
+        <button class="chip" role="tab" data-filter="shopify">Shopify</button>
+        <button class="chip" role="tab" data-filter="react">React</button>
+        <button class="chip" role="tab" data-filter="graphql">GraphQL</button>
+        <button class="chip" role="tab" data-filter="performance">Performance</button>
+        <button class="chip" role="tab" data-filter="accessibility">Accessibility</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Project 1 -->
+      <article class="card card-proj reveal" data-tags="shopify performance accessibility graphql">
+        <div class="banner" aria-hidden="true"></div>
+        <div class="body">
+          <h3 style="margin:0 0 6px; font-weight:900">Hospitality Multi-Brand Theme System</h3>
+          <div style="color:var(--muted); font-size:14px; margin-bottom:10px">Graniti Vicentia · 2024–Present</div>
+          <p>12+ custom Shopify themes across 10+ locations using Liquid/HTML/CSS/JS. Achieved 95% mobile usability and 92+ PSI via lazy loading, image optimization, and code minification.</p>
+          <div class="kpis">
+            <div class="kpi">Load time ↓ 45%</div>
+            <div class="kpi">Mobile usability 95%</div>
+            <div class="kpi">500+ monthly modifications</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Liquid</span><span class="tag">React</span><span class="tag">GraphQL</span><span class="tag">WCAG 2.1</span>
+          </div>
+          <div class="proj-actions">
+            <a class="btn btn-ghost" href="#" target="_blank">🔗 Live</a>
+            <a class="btn btn-ghost" href="#" target="_blank">🧠 Case Study</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="card card-proj reveal" data-tags="shopify graphql react">
+        <div class="banner" aria-hidden="true"></div>
+        <div class="body">
+          <h3 style="margin:0 0 6px; font-weight:900">Reusable Liquid + React Component Library</h3>
+          <div style="color:var(--muted); font-size:14px; margin-bottom:10px">Graniti Vicentia · 2024–Present</div>
+          <p>50+ reusable sections/snippets with schema for Theme Editor. React widgets for reviews, sticky cart, and dynamic filters. Automated GraphQL dashboards tracking CVR & site speed.</p>
+          <div class="kpis">
+            <div class="kpi">50+ components</div>
+            <div class="kpi">500+ mods / month</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Shopify CLI</span><span class="tag">Sections</span><span class="tag">GraphQL</span><span class="tag">React</span>
+          </div>
+          <div class="proj-actions">
+            <a class="btn btn-ghost" href="#" target="_blank">🔗 Live</a>
+            <a class="btn btn-ghost" href="#" target="_blank">💻 Code</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="card card-proj reveal" data-tags="shopify performance">
+        <div class="banner" aria-hidden="true"></div>
+        <div class="body">
+          <h3 style="margin:0 0 6px; font-weight:900">Multi-Store Commerce Platform</h3>
+          <div style="color:var(--muted); font-size:14px; margin-bottom:10px">Aiila Innovations · 2022–2024</div>
+          <p>Managed 150+ storefronts with component-based architecture and SASS. Improved site performance by 35% and lowered bounce by 28% through mobile-first patterns & A/B tests.</p>
+          <div class="kpis">
+            <div class="kpi">35% perf ↑</div>
+            <div class="kpi">-28% bounce</div>
+            <div class="kpi">300+ requests / mo</div>
+          </div>
+          <div class="tags">
+            <span class="tag">SASS</span><span class="tag">JavaScript</span><span class="tag">Shopify API</span>
+          </div>
+          <div class="proj-actions">
+            <a class="btn btn-ghost" href="#" target="_blank">🔗 Live</a>
+            <a class="btn btn-ghost" href="#" target="_blank">🧠 Case Study</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4 -->
+      <article class="card card-proj reveal" data-tags="react performance accessibility">
+        <div class="banner" aria-hidden="true"></div>
+        <div class="body">
+          <h3 style="margin:0 0 6px; font-weight:900">Front-End Performance Overhaul (PWA Ready)</h3>
+          <div style="color:var(--muted); font-size:14px; margin-bottom:10px">Think Deeply Solutions · 2021–2022</div>
+          <p>Code-splitting, tree-shaking, caching strategies. 40% faster loads; Lighthouse CI added. Automated and manual WCAG audits for AA conformance.</p>
+          <div class="kpis">
+            <div class="kpi">40% faster loads</div>
+            <div class="kpi">Lighthouse CI</div>
+            <div class="kpi">AA Accessibility</div>
+          </div>
+          <div class="tags">
+            <span class="tag">PWA</span><span class="tag">WCAG 2.1</span><span class="tag">React</span>
+          </div>
+          <div class="proj-actions">
+            <a class="btn btn-ghost" href="#" target="_blank">🔗 Live</a>
+            <a class="btn btn-ghost" href="#" target="_blank">💻 Code</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 5 -->
+      <article class="card card-proj reveal" data-tags="shopify graphql accessibility">
+        <div class="banner" aria-hidden="true"></div>
+        <div class="body">
+          <h3 style="margin:0 0 6px; font-weight:900">Theme Extensions & Shopify Functions</h3>
+          <div style="color:var(--muted); font-size:14px; margin-bottom:10px">Aiila Innovations · 2023–2024</div>
+          <p>Shopify Functions for discounts/cart validations, metafield-driven content models, and 3rd-party integrations (reviews, inventory, payments) via REST/GraphQL.</p>
+          <div class="kpis">
+            <div class="kpi">Functions: pricing/cart</div>
+            <div class="kpi">REST + GraphQL</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Functions</span><span class="tag">Metafields</span><span class="tag">REST</span><span class="tag">GraphQL</span>
+          </div>
+          <div class="proj-actions">
+            <a class="btn btn-ghost" href="#" target="_blank">🔗 Live</a>
+            <a class="btn btn-ghost" href="#" target="_blank">🧠 Case Study</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="sec-head">
+      <div class="sec-title">Technical Skills</div>
+      <div class="sec-sub">Tools I ship with every build.</div>
+    </div>
+    <div class="skills-grid">
+      <div class="card skill reveal">
+        <div class="tile-title">Shopify Development</div>
+        <div class="badges">
+          <div class="badge">Liquid</div><div class="badge">Shopify CLI</div><div class="badge">Sections</div>
+          <div class="badge">Metafields</div><div class="badge">Functions</div><div class="badge">Theme Kit</div>
+        </div>
+      </div>
+      <div class="card skill reveal">
+        <div class="tile-title">Front-End</div>
+        <div class="badges">
+          <div class="badge">HTML5</div><div class="badge">CSS3</div><div class="badge">JavaScript (ES6+)</div>
+          <div class="badge">React</div><div class="badge">SASS/SCSS</div><div class="badge">Tailwind</div>
+        </div>
+      </div>
+      <div class="card skill reveal">
+        <div class="tile-title">APIs & Data</div>
+        <div class="badges">
+          <div class="badge">GraphQL</div><div class="badge">REST</div><div class="badge">Webhooks</div>
+          <div class="badge">Axios/Fetch</div><div class="badge">JSON</div>
+        </div>
+      </div>
+      <div class="card skill reveal">
+        <div class="tile-title">Quality & Performance</div>
+        <div class="badges">
+          <div class="badge">Lighthouse CI</div><div class="badge">PSI</div><div class="badge">Core Web Vitals</div>
+          <div class="badge">WCAG 2.1</div><div class="badge">Cross-device tests</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-head">
+      <div class="sec-title">About Me</div>
+      <div class="sec-sub">Quick snapshot of background & focus.</div>
+    </div>
+    <div class="grid" style="grid-template-columns: repeat(3,1fr)">
+      <div class="card reveal" style="padding:18px">
+        <div class="tile-title">Expert Developer</div>
+        <div class="tile-sub">Reduced page load by 45% across 12+ multi-brand themes; 95% mobile usability.</div>
+      </div>
+      <div class="card reveal" style="padding:18px">
+        <div class="tile-title">Component-Driven</div>
+        <div class="tile-sub">Built 500+ reusable sections/snippets & React widgets for dynamic UX.</div>
+      </div>
+      <div class="card reveal" style="padding:18px">
+        <div class="tile-title">Proven Results</div>
+        <div class="tile-sub">Graniti Vicentia · Aiila Innovations · Think Deeply Solutions.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="sec-head">
+      <div>
+        <div class="sec-title">Let’s Build Something Great</div>
+        <div class="sec-sub">Independent contractor · Remote-friendly · Mon–Fri</div>
+      </div>
+      <div class="contact status reveal">
+        <div class="dot" aria-hidden="true"></div>
+        Open for Shopify theme work & performance revamps
+      </div>
+    </div>
+
+    <div class="contact">
+      <div class="card item reveal">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM5 7l7 5 7-5"/></svg></div>
+        <div>
+          <div class="title">Email</div>
+          <div class="val"><a href="mailto:vyshnavitammineni009@gmail.com" style="color:inherit">vyshnavitammineni009@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="card item reveal">
+        <div class="icon" aria-hidden="true" style="background:linear-gradient(135deg,var(--accent2),var(--accent3))"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.2 1 .4 2 .6 3 .6.7 0 1.4.6 1.4 1.3V21c0 .7-.6 1.3-1.3 1.3A18.7 18.7 0 0 1 3 4.3 1.3 1.3 0 0 1 4.3 3H7c.7 0 1.3.6 1.3 1.3 0 1 .2 2 .6 3 .2.4.1.9-.2 1.2z"/></svg></div>
+        <div>
+          <div class="title">Phone</div>
+          <div class="val"><a href="tel:+917702730409" style="color:inherit">+91 7702730409</a></div>
+        </div>
+      </div>
+      <div class="card item reveal">
+        <div class="icon" aria-hidden="true" style="background:linear-gradient(135deg,var(--accent3),var(--accent))"><svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8m0 10.5A2.5 2.5 0 1 1 12 7.5a2.5 2.5 0 0 1 0 5z"/></svg></div>
+        <div>
+          <div class="title">Location</div>
+          <div class="val">Hyderabad, IN (Remote-Global)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions" style="margin-top:18px">
+      <button class="btn btn-grad" onclick="downloadResume()">📥 Download Resume</button>
+      <button class="btn btn-ghost" onclick="printResume()">🖨️ Save Resume as PDF</button>
+      <a class="btn" href="#projects">📌 See Projects</a>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="yr"></span> Vyshnavi Tammineni · Built with Liquid-loving vibes ✨
+  </footer>
+
+  <script>
+    // === CONFIG ===
+    // Replace this with your actual resume file path in your repo (e.g., /assets/Vyshnavi_Tammineni_Resume.pdf)
+    const RESUME_URL = "Vyshnavi_Tammineni_Resume.pdf";
+
+    // Smooth scroll for anchor links (native behavior is fine, this adds offset for fixed nav)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href').substring(1);
+        const el = document.getElementById(id);
+        if(!el) return;
+        e.preventDefault();
+        const top = el.getBoundingClientRect().top + window.scrollY - 70;
+        window.scrollTo({top, behavior:'smooth'});
+      });
+    });
+
+    // Animated counters
+    const countEls = document.querySelectorAll('.num[data-count]');
+    const animateNum = (el)=>{
+      const target = Number(el.dataset.count||0);
+      const dur = 900, start = performance.now();
+      const step = (t)=>{
+        const p = Math.min(1,(t-start)/dur);
+        const val = Math.floor(p*target);
+        el.textContent = val.toLocaleString();
+        if(p<1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(ent=>{
+        if(ent.isIntersecting){
+          ent.target.classList.add('show');
+          ent.target.querySelectorAll?.('.num[data-count]')?.forEach(animateNum);
+        }
+      });
+    }, {threshold:.16});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // Filters
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('.card-proj');
+    chips.forEach(ch=>{
+      ch.addEventListener('click', ()=>{
+        chips.forEach(c=>c.setAttribute('aria-checked','false'));
+        ch.setAttribute('aria-checked','true');
+        const f = ch.dataset.filter;
+        cards.forEach(card=>{
+          if(f==='all'){ card.style.display='block'; return; }
+          const tags = (card.getAttribute('data-tags')||'').split(/\s+/);
+          card.style.display = tags.includes(f) ? 'block' : 'none';
+        });
+      });
+    });
+
+    // Resume download — attempts direct download; if not found, creates a fallback PDF-like text Blob
+    function downloadResume(){
+      fetch(RESUME_URL, {method:'HEAD'}).then(res=>{
+        if(res.ok){
+          const a = document.createElement('a');
+          a.href = RESUME_URL;
+          a.download = 'Vyshnavi_Tammineni_Resume.pdf';
+          document.body.appendChild(a);
+          a.click(); a.remove();
+        }else{ fallbackResume(); }
+      }).catch(()=> fallbackResume());
+    }
+    function fallbackResume(){
+      const content = `Vyshnavi Tammineni — Shopify Theme Developer
+Liquid • React • GraphQL • Performance (PSI 92+)
+Email: vyshnavitammineni009@gmail.com | Phone: +91 7702730409 | Hyderabad, IN (Remote)
+
+Experience:
+• Graniti Vicentia — Hospitality Multi-Brand Theme System (12+ themes, 45% faster loads, 95% mobile usability)
+• Aiila Innovations — 150+ storefronts, component library, A/B tests (35% perf ↑, -28% bounce)
+• Think Deeply Solutions — PWA-ready performance overhaul (40% faster loads, Lighthouse CI)
+
+Skills:
+Shopify (Liquid/CLI/Sections/Metafields/Functions), React, HTML5, CSS3, JS (ES6+), GraphQL, REST, WCAG 2.1, PSI, Core Web Vitals.
+`;
+      const blob = new Blob([content], {type:'application/pdf'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'Vyshnavi_Tammineni_Resume.pdf'; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      alert('Heads up: Replace RESUME_URL with your real PDF to enable the proper download.');
+    }
+
+    // Print resume — prints the Projects + Skills as a quick portfolio PDF
+    function printResume(){
+      const title = document.title;
+      document.title = "Vyshnavi_Tammineni_Resume_Portfolio";
+      window.print();
+      document.title = title;
+    }
+
+    // Current year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Print styles (minimal, clean) -->
+  <style media="print">
+    nav, .actions, .filters, .proj-actions, .aurora { display:none !important; }
+    body{ background:#fff; color:#000; }
+    .card, .card-proj, .skill { box-shadow:none !important; border:1px solid #ddd }
+    a{ color:#000; text-decoration:none }
+  </style>
+</body>
+</html>
